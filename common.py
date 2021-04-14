@@ -28,7 +28,7 @@ def getChildren(lastToken, unvisitedTokens, isFirstMove):
 
 
 def getScoreHelper(lastToken, unvisitedTokens, children, isMax):
-    global score
+    score = 0
     if 1 not in unvisitedTokens:
         score = 0
 
@@ -66,7 +66,7 @@ def getScoreHelper(lastToken, unvisitedTokens, children, isMax):
             score = 0.6
 
     if isMax is False:
-        score = -(score)
+        score = -score
 
     return score
 
