@@ -1,4 +1,5 @@
 import sympy
+from Game import *
 
 
 def getChildren(lastToken, unvisitedTokens, isFirstMove):
@@ -26,8 +27,8 @@ def getChildren(lastToken, unvisitedTokens, isFirstMove):
 
     return children
 
-
-def getScoreHelper(lastToken, unvisitedTokens, children):
+# by default we assume that it's Max's turn
+def getStaticEvaluation(lastToken, unvisitedTokens, children, isMaxTurn):
     score = 0
     if 1 not in unvisitedTokens:
         score = 0
@@ -64,27 +65,27 @@ def getScoreHelper(lastToken, unvisitedTokens, children):
         else:
             score = 0.6
 
+    if len(children) == 0:
+        score = -1
+
+    if isMaxTurn is False:
+        score = -score
+
     return score
 
 
-def staticEvaluation(isMaxTurn, visitedTokens, unvisitedTokens, isFirstMove):
+def alphaBetaPrune(isMaxTurn, aGame, isFirstMove):
     score = 0
-    lastToken = visitedTokens[-1]
-    children = getChildren(lastToken, unvisitedTokens, isFirstMove)
+    lastToken = aGame.lastToken
+    children = getChildren(lastToken, aGame.unvisited, isFirstMove)
 
     if isMaxTurn is True:
-        # if it's Max's turn and he can't choose any token, Min wins
-        if not len(children) > 0:
-            score = -1
-        else:
-            score = getScoreHelper(lastToken, unvisitedTokens, children)
+            score = getStaticEvaluation(lastToken, aGame.unvisited, children, isMaxTurn)
 
 
     else:
-        # if it's Min's turn and he can't choose any token, Max wins
-        if not len(children) > 0:
-            score = 1
-        else:
-            score = -getScoreHelper(lastToken, unvisitedTokens, children)
+            score = getStaticEvaluation(lastToken, aGame.unvisited, children, isMaxTurn)
 
     return score
+
+aGame = Game(7, [1,2,3])
