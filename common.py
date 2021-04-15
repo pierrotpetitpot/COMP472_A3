@@ -3,8 +3,12 @@ from Game import *
 
 
 # by default we assume that it's Max's turn
-def getStaticEvaluation(lastToken, unvisitedTokens, children, isMaxTurn):
+def getStaticEvaluation(aGame, isMaxTurn):
+
     score = 0
+    lastToken = aGame.lastToken
+    unvisitedTokens = aGame.unvisited
+    children = aGame.possibleMoves
 
     if 1 in unvisitedTokens:
         score = 0

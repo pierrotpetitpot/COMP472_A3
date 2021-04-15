@@ -5,7 +5,8 @@ class Game:
         self.isEnd = True if len(visited) == gameSize else False
         self.isFirstMove = True if len(visited) == 0 else False
         self.lastToken = visited[-1]
-        self.Children = self.getChildren(self.getPossibleMoves(self.lastToken, self.unvisited, self.isFirstMove), self.visited)
+        self.possibleMoves = self.getPossibleMoves(self.lastToken, self.unvisited, self.isFirstMove)
+        self.Children = self.getChildren(self.possibleMoves, self.visited)
 
         def getUnvisited(gameSize, visited):
             unvisited = []
