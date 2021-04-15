@@ -27,7 +27,7 @@ def getChildren(lastToken, unvisitedTokens, isFirstMove):
     return children
 
 
-def getScoreHelper(lastToken, unvisitedTokens, children, isMax):
+def getScoreHelper(lastToken, unvisitedTokens, children):
     score = 0
     if 1 not in unvisitedTokens:
         score = 0
@@ -50,7 +50,6 @@ def getScoreHelper(lastToken, unvisitedTokens, children, isMax):
         else:
             score = 0.7
 
-
     if sympy.isprime(lastToken) is False:
         # primefactors() returns prime factors of number in a list, and [-1] returns the last element of that list
         # which is usually the biggest prime from the list
@@ -65,9 +64,6 @@ def getScoreHelper(lastToken, unvisitedTokens, children, isMax):
         else:
             score = 0.6
 
-    if isMax is False:
-        score = -score
-
     return score
 
 
@@ -81,7 +77,7 @@ def staticEvaluation(isMaxTurn, visitedTokens, unvisitedTokens, isFirstMove):
         if not len(children) > 0:
             score = -1
         else:
-            score = getScoreHelper(lastToken, unvisitedTokens, children, isMaxTurn)
+            score = getScoreHelper(lastToken, unvisitedTokens, children)
 
 
     else:
@@ -89,6 +85,6 @@ def staticEvaluation(isMaxTurn, visitedTokens, unvisitedTokens, isFirstMove):
         if not len(children) > 0:
             score = 1
         else:
-            score = getScoreHelper(lastToken, unvisitedTokens, children, isMaxTurn)
+            score = -getScoreHelper(lastToken, unvisitedTokens, children)
 
     return score
