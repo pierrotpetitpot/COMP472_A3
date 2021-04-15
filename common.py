@@ -2,35 +2,11 @@ import sympy
 from Game import *
 
 
-def getChildren(lastToken, unvisitedTokens, isFirstMove):
-    children = []
-
-    # we need to get all odd numbers lesser than n/2 for the first move
-    if isFirstMove is True:
-        limit = len(unvisitedTokens) / 2
-        for token in unvisitedTokens:
-            # assuming list is sorted asc
-            if token > limit:
-                break
-            if token % 2 != 0:
-                children.append(token)
-
-    # anything other than first move, we get multiple or factor of the last move
-    else:
-        for token in unvisitedTokens:
-            # get factors
-            if lastToken % token == 0:
-                children.append(token)
-            # get multiples
-            if token % lastToken == 0:
-                children.append(token)
-
-    return children
-
 # by default we assume that it's Max's turn
 def getStaticEvaluation(lastToken, unvisitedTokens, children, isMaxTurn):
     score = 0
-    if 1 not in unvisitedTokens:
+
+    if 1 in unvisitedTokens:
         score = 0
 
     if lastToken == 1:
@@ -74,18 +50,10 @@ def getStaticEvaluation(lastToken, unvisitedTokens, children, isMaxTurn):
     return score
 
 
-def alphaBetaPrune(isMaxTurn, aGame, isFirstMove):
-    score = 0
-    lastToken = aGame.lastToken
-    children = getChildren(lastToken, aGame.unvisited, isFirstMove)
+def alphaBetaPrune(isMaxTurn, aGame, depth):
 
-    if isMaxTurn is True:
-            score = getStaticEvaluation(lastToken, aGame.unvisited, children, isMaxTurn)
+    if depth == 0 or len(aGame.children) == 0:
+        return getStaticEvaluation(aGame.lastToken, aGame.unvisited, aGame.children)
 
 
-    else:
-            score = getStaticEvaluation(lastToken, aGame.unvisited, children, isMaxTurn)
-
-    return score
-
-aGame = Game(7, [1,2,3])
+aGame = Game(7, [1, 2, 3], 5)
