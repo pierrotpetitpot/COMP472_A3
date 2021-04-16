@@ -18,7 +18,7 @@ class Game:
             return unvisited
 
         def getPossibleMoves(lastToken, unvisitedTokens, isFirstMove):
-            children = []
+            possibleMoves = []
 
             # we need to get all odd numbers lesser than n/2 for the first move
             if isFirstMove is True:
@@ -28,20 +28,19 @@ class Game:
                     if token > limit:
                         break
                     if token % 2 != 0:
-                        children.append(token)
+                        possibleMoves.append(token)
 
             # anything other than first move, we get multiple or factor of the last move
             else:
                 for token in unvisitedTokens:
                     # get factors
                     if lastToken % token == 0:
-                        children.append(token)
+                        possibleMoves.append(token)
                     # get multiples
                     if token % lastToken == 0:
-                        children.append(token)
+                        possibleMoves.append(token)
 
-            return children
-
+            return possibleMoves
 
 
         def getChildren(possibleMoves, visited):
