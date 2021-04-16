@@ -1,5 +1,6 @@
 import sympy
 from Game import *
+import math
 
 
 # by default we assume that it's Max's turn
@@ -8,20 +9,20 @@ def getStaticEvaluation(aGame, isMaxTurn):
     score = 0
     lastToken = aGame.lastToken
     unvisitedTokens = aGame.unvisited
-    children = aGame.possibleMoves
+    possibleMoves = aGame.possibleMoves
 
     if 1 in unvisitedTokens:
         score = 0
 
     if lastToken == 1:
-        if len(children) % 2 == 0:
+        if len(possibleMoves) % 2 == 0:
             score = -0.5
         else:
             score = 0.5
 
     if sympy.isprime(lastToken) is True:
         primeMultiples = []
-        for child in children:
+        for child in possibleMoves:
             # finding all multiples of the prime number
             if child % lastToken == 0:
                 primeMultiples.append(child)
@@ -36,7 +37,7 @@ def getStaticEvaluation(aGame, isMaxTurn):
         # which is usually the biggest prime from the list
         largestPrime = sympy.primefactors(lastToken)[-1]
         primeMultiples = []
-        for child in children:
+        for child in possibleMoves:
             if child % largestPrime == 0:
                 primeMultiples.append(child)
 
@@ -45,7 +46,7 @@ def getStaticEvaluation(aGame, isMaxTurn):
         else:
             score = 0.6
 
-    if len(children) == 0:
+    if len(possibleMoves) == 0:
         score = -1
 
     if isMaxTurn is False:
@@ -57,7 +58,21 @@ def getStaticEvaluation(aGame, isMaxTurn):
 def alphaBetaPrune(isMaxTurn, aGame, depth):
 
     if depth == 0 or len(aGame.children) == 0:
-        return getStaticEvaluation(aGame.lastToken, aGame.unvisited, aGame.children)
+        return getStaticEvaluation(aGame, isMaxTurn)
 
+    if isMaxTurn is True:
+        maxEval = -(math.inf)
+
+        for child in aGame.children:
+            eval = alphaBetaPrune(False, depth - 1, child)
+            maxEval = max(maxEval, eval)
+        return maxEval
+
+    else:
+        minEval = math.inf
+        for child in aGame.children:
+            eval = alphaBetaPrune(True, depth - 1, child)
+            minEval = min(minEval, eval)
+        return minEval
 
 aGame = Game(7, [1, 2, 3], 5)
