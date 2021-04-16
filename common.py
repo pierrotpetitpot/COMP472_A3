@@ -75,4 +75,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth):
             minEval = min(minEval, eval)
         return minEval
 
-aGame = Game(7, [1, 2, 3], 5)
+
+aGame = Game(7, [])
+
+print(aGame)
