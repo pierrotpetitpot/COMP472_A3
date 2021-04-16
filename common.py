@@ -58,24 +58,25 @@ def getStaticEvaluation(aGame, isMaxTurn):
 def alphaBetaPrune(isMaxTurn, aGame, depth):
 
     if depth == 0 or len(aGame.children) == 0:
-        return getStaticEvaluation(aGame, isMaxTurn)
+        score = getStaticEvaluation(aGame, isMaxTurn)
+        aGame.setScore(score)
 
     if isMaxTurn is True:
         maxEval = -(math.inf)
 
         for child in aGame.children:
-            eval = alphaBetaPrune(False, depth - 1, child)
+            eval = alphaBetaPrune(False, child, depth - 1)
             maxEval = max(maxEval, eval)
         return maxEval
 
     else:
         minEval = math.inf
         for child in aGame.children:
-            eval = alphaBetaPrune(True, depth - 1, child)
+            eval = alphaBetaPrune(True, child,  depth - 1)
             minEval = min(minEval, eval)
         return minEval
 
 
-aGame = Game(7, [])
-
+aGame = Game(7, [1])
+alphaBetaPrune(True, aGame, 3)
 print(aGame)

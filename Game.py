@@ -4,11 +4,13 @@ class Game:
     def __init__(self, gameSize, visited):
         self.unvisited = self.getUnvisited(gameSize, visited)
         self.visited = visited
-        self.isEnd = True if len(visited) == gameSize else False
         self.isFirstMove = True if len(visited) == 0 else False
         self.lastToken = visited[-1] if len(visited) > 0 else None
         self.possibleMoves = self.getPossibleMoves(self.lastToken, self.unvisited, self.isFirstMove)
-        self.Children = self.getChildren(self.possibleMoves, self.visited, gameSize)
+        self.children = self.getChildren(self.possibleMoves, self.visited, gameSize)
+        self.isEnd = True if len(self.children) == 0 else False
+        self.score = None
+
 
     def getUnvisited(self, gameSize, visitedPrime):
         visited = copy.deepcopy(visitedPrime)
@@ -55,10 +57,13 @@ class Game:
 
         listOfGames = []
         for move in possibleMoves:
-            oldVisited = visited
+            oldVisited = copy.deepcopy(visited)
             oldVisited.append(move)
             newVisited = copy.deepcopy(oldVisited)
             aNewGame = Game(gameSize, newVisited)
             listOfGames.append(aNewGame)
 
         return listOfGames
+
+    def setScore(self, aScore):
+        self.score = aScore
