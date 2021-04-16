@@ -4,8 +4,9 @@ import math
 
 
 # by default we assume that it's Max's turn
-def getStaticEvaluation(aGame, isMaxTurn):
+def getStaticEvaluation(aGamePrime, isMaxTurn):
 
+    aGame = copy.deepcopy(aGamePrime)
     score = 0
     lastToken = aGame.lastToken
     unvisitedTokens = aGame.unvisited
@@ -60,6 +61,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth):
     if depth == 0 or len(aGame.children) == 0:
         score = getStaticEvaluation(aGame, isMaxTurn)
         aGame.setScore(score)
+        return score
 
     if isMaxTurn is True:
         maxEval = -(math.inf)
@@ -67,6 +69,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth):
         for child in aGame.children:
             eval = alphaBetaPrune(False, child, depth - 1)
             maxEval = max(maxEval, eval)
+            child.setScore(maxEval)
         return maxEval
 
     else:
@@ -74,6 +77,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth):
         for child in aGame.children:
             eval = alphaBetaPrune(True, child,  depth - 1)
             minEval = min(minEval, eval)
+            child.setScore(minEval)
         return minEval
 
 
