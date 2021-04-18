@@ -5,7 +5,7 @@ from operator import attrgetter
 import sys
 
 
-# by default we assume that it's Max's turn
+# by default we assume that it's Max's turn. If it's Min's turn, we get the reverse
 def getStaticEvaluation(aGamePrime, isMaxTurn):
     aGame = copy.deepcopy(aGamePrime)
     score = 0
@@ -114,10 +114,17 @@ def createGame(aList):
 def getBestChild(aGame):
     isMaxturn = aGame.isMaxTurn
 
+    validChildren = []
+
+    # null check, some children don't have a score
+    for child in aGame.children:
+        if child.score is not None:
+            validChildren.append(child)
+
     if isMaxturn is True:
-        bestChild = max(aGame.children, key=attrgetter('score'))
+        bestChild = max(validChildren, key=attrgetter('score'))
     else:
-        bestChild = min(aGame.children, key=attrgetter('score'))
+        bestChild = min(validChildren, key=attrgetter('score'))
 
     return bestChild
 
