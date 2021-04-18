@@ -12,6 +12,9 @@ def getStaticEvaluation(aGamePrime, isMaxTurn):
     unvisitedTokens = aGame.unvisited
     possibleMoves = aGame.possibleMoves
 
+    if lastToken is None:
+        return None
+
     if 1 in unvisitedTokens:
         score = 0
 
@@ -56,7 +59,8 @@ def getStaticEvaluation(aGamePrime, isMaxTurn):
     return score
 
 
-def alphaBetaPrune(isMaxTurn, aGame, depth, alpha, beta):
+def alphaBetaPrune(aGame, depth, alpha, beta):
+    isMaxTurn = aGame.isMaxTurn
 
     if depth == 0 or len(aGame.children) == 0:
         score = getStaticEvaluation(aGame, isMaxTurn)
@@ -67,7 +71,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth, alpha, beta):
         maxEval = -(math.inf)
 
         for child in aGame.children:
-            eval = alphaBetaPrune(False, child, depth - 1, alpha, beta)
+            eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             maxEval = max(maxEval, eval)
             alpha = max(alpha, eval)
             if beta <= alpha:
@@ -78,7 +82,7 @@ def alphaBetaPrune(isMaxTurn, aGame, depth, alpha, beta):
     else:
         minEval = math.inf
         for child in aGame.children:
-            eval = alphaBetaPrune(True, child,  depth - 1, alpha, beta)
+            eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             minEval = min(minEval, eval)
             beta = min(beta, eval)
             if beta <= alpha:
@@ -86,4 +90,15 @@ def alphaBetaPrune(isMaxTurn, aGame, depth, alpha, beta):
             child.setScore(minEval)
         return minEval
 
+
+def createGame(aList):
+    gameSize = aList[0]
+    depth = aList[-1]
+    numberOfVisited = aList[1]
+    visitedTokens = []
+    if numberOfVisited > 0:
+        visitedTokens = aList[2:-1]
+
+    aNewGame = Game(gameSize, visitedTokens)
+    return aNewGame
 

@@ -9,8 +9,8 @@ class Game:
         self.possibleMoves = self.getPossibleMoves(self.lastToken, self.unvisited, self.isFirstMove)
         self.children = self.getChildren(self.possibleMoves, self.visited, gameSize)
         self.isEnd = True if len(self.children) == 0 else False
-        self.score = None
-
+        self.score = None  # IN MAX'S POINT OF VIEW
+        self.isMaxTurn = self.whoseTurnIsIt(self.visited)
 
     def getUnvisited(self, gameSize, visitedPrime):
         visited = copy.deepcopy(visitedPrime)
@@ -67,3 +67,18 @@ class Game:
 
     def setScore(self, aScore):
         self.score = aScore
+
+    def whoseTurnIsIt(self, visited):
+        numberOfVisited = len(visited)
+        isMaxturn = False
+        if numberOfVisited > 0:
+            if numberOfVisited % 2 == 0:
+                isMaxturn = True
+        else:
+            isMaxturn = True
+
+        return isMaxturn
+
+def staticCounter():
+    staticCounter.counter += 1
+    print (staticCounter.counter)
