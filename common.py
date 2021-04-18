@@ -137,3 +137,8 @@ def getInputs(inputs):
         parsedArgs.append(int(i))
 
     return parsedArgs
+
+
+def staticCounter():
+    staticCounter.counter += 1
+    print(staticCounter.counter)

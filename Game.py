@@ -79,6 +79,3 @@ class Game:
 
         return isMaxturn
 
-def staticCounter():
-    staticCounter.counter += 1
-    print (staticCounter.counter)
