@@ -1,16 +1,23 @@
 import sympy
 from Game import *
 import math
+from operator import attrgetter
+import sys
 
 
 # by default we assume that it's Max's turn
 def getStaticEvaluation(aGamePrime, isMaxTurn):
-
     aGame = copy.deepcopy(aGamePrime)
     score = 0
     lastToken = aGame.lastToken
     unvisitedTokens = aGame.unvisited
     possibleMoves = aGame.possibleMoves
+
+    if len(possibleMoves) == 0:
+        score = -1
+        if isMaxTurn is False:
+            score = 1
+        return score
 
     if lastToken is None:
         return None
@@ -50,9 +57,6 @@ def getStaticEvaluation(aGamePrime, isMaxTurn):
         else:
             score = 0.6
 
-    if len(possibleMoves) == 0:
-        score = -1
-
     if isMaxTurn is False:
         score = -score
 
@@ -74,6 +78,8 @@ def alphaBetaPrune(aGame, depth, alpha, beta):
             eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             maxEval = max(maxEval, eval)
             alpha = max(alpha, eval)
+            if maxEval == 1:
+                break
             if beta <= alpha:
                 break
             child.setScore(maxEval)
@@ -85,6 +91,8 @@ def alphaBetaPrune(aGame, depth, alpha, beta):
             eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             minEval = min(minEval, eval)
             beta = min(beta, eval)
+            if minEval == -1:
+                break
             if beta <= alpha:
                 break
             child.setScore(minEval)
@@ -102,3 +110,23 @@ def createGame(aList):
     aNewGame = Game(gameSize, visitedTokens)
     return aNewGame
 
+
+def getBestChild(aGame):
+    isMaxturn = aGame.isMaxTurn
+
+    if isMaxturn is True:
+        bestChild = max(aGame.children, key=attrgetter('score'))
+    else:
+        bestChild = min(aGame.children, key=attrgetter('score'))
+
+    return bestChild
+
+
+def getInputs(inputs):
+    arguments = inputs
+    var = arguments.pop(0)
+    parsedArgs = []
+    for i in arguments:
+        parsedArgs.append(int(i))
+
+    return parsedArgs
