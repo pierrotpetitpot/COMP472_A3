@@ -99,6 +99,7 @@ def alphaBetaPrune(aGame, depth, alpha, beta):
         return minEval
 
 
+# creates a game and returns a dictionary composed of a game and a depth
 def createGame(aList):
     gameSize = aList[0]
     depth = aList[-1]
@@ -106,9 +107,16 @@ def createGame(aList):
     visitedTokens = []
     if numberOfVisited > 0:
         visitedTokens = aList[2:-1]
+    if depth == 0:
+        depth = math.inf
 
     aNewGame = Game(gameSize, visitedTokens)
-    return aNewGame
+
+    dictionary = {
+        "game": aNewGame,
+        "depth": depth
+    }
+    return dictionary
 
 
 def getBestChild(aGame):
