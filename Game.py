@@ -2,6 +2,8 @@ import copy
 
 class Game:
     def __init__(self, gameSize, visited):
+        self.evaluatedNodes = len(visited)
+        self.visitedNodes = len(visited)
         self.unvisited = self.getUnvisited(gameSize, visited)
         self.visited = visited
         self.isFirstMove = True if len(visited) == 0 else False
@@ -11,6 +13,7 @@ class Game:
         self.isEnd = True if len(self.children) == 0 else False
         self.score = None  # IN MAX'S POINT OF VIEW
         self.isMaxTurn = self.whoseTurnIsIt(self.visited)
+
 
     def getUnvisited(self, gameSize, visitedPrime):
         visited = copy.deepcopy(visitedPrime)
@@ -47,23 +50,27 @@ class Game:
                 # get multiples
                 if token % lastToken == 0:
                     possibleMoves.append(token)
-
         return possibleMoves
+
 
     def getChildren(self, possibleMovesPrime, visitedPrime, gameSizePrime):
         possibleMoves = copy.deepcopy(possibleMovesPrime)
         visited = copy.deepcopy(visitedPrime)
         gameSize = copy.deepcopy(gameSizePrime)
-
         listOfGames = []
         for move in possibleMoves:
             oldVisited = copy.deepcopy(visited)
             oldVisited.append(move)
             newVisited = copy.deepcopy(oldVisited)
             aNewGame = Game(gameSize, newVisited)
+            self.evaluatedNodes += 1
             listOfGames.append(aNewGame)
-
+        totalVisited = 0
+        for games in listOfGames:
+            totalVisited += len(games.possibleMoves)
+        self.visitedNodes += totalVisited
         return listOfGames
+
 
     def setScore(self, aScore):
         self.score = aScore
@@ -78,4 +85,6 @@ class Game:
             isMaxturn = True
 
         return isMaxturn
+
+
 

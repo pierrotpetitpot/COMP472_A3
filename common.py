@@ -4,6 +4,7 @@ import math
 from operator import attrgetter
 import sys
 
+visitedNodes = 1
 
 # by default we assume that it's Max's turn. If it's Min's turn, we get the reverse
 def getStaticEvaluation(aGamePrime, isMaxTurn):
@@ -73,7 +74,6 @@ def alphaBetaPrune(aGame, depth, alpha, beta):
 
     if isMaxTurn is True:
         maxEval = -(math.inf)
-
         for child in aGame.children:
             eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             maxEval = max(maxEval, eval)
@@ -83,11 +83,13 @@ def alphaBetaPrune(aGame, depth, alpha, beta):
             if beta <= alpha:
                 break
             child.setScore(maxEval)
+
         return maxEval
 
     else:
         minEval = math.inf
         for child in aGame.children:
+
             eval = alphaBetaPrune(child, depth - 1, alpha, beta)
             minEval = min(minEval, eval)
             beta = min(beta, eval)
@@ -133,7 +135,9 @@ def getBestChild(aGame):
         bestChild = max(validChildren, key=attrgetter('score'))
     else:
         bestChild = min(validChildren, key=attrgetter('score'))
-
+    move = bestChild.lastToken
+    bestScore = bestChild.score
+    print("Move: "+ str(move)+"\n"+"Score: "+str(bestScore))
     return bestChild
 
 
