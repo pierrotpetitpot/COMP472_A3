@@ -14,3 +14,4 @@ Number of Nodes Evaluated: 1 <br/>
 Max Depth Reached: 2 <br/>
 Avg Effective Branching Factor: 1.0 <br/>
 
+The file named "randomTestcases.txt" contains the results of 10 random cases.
