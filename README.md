@@ -9,9 +9,10 @@ Doing so will execute the program and return the required output.
 
 The expected output of the above input would be:
 
-Move: 6 \n
-Value: 1.0 \n
-Number of Nodes Visited: 3 \n
-Number of Nodes Evaluated: 1 \n
-Max Depth Reached: 2 \n
-Avg Effective Branching Factor: 1.0 \n
+Move: 6 <br/>
+Value: 1.0 <br/>
+Number of Nodes Visited: 3 <br/>
+Number of Nodes Evaluated: 1 <br/>
+Max Depth Reached: 2 <br/>
+Avg Effective Branching Factor: 1.0 <br/>
+
